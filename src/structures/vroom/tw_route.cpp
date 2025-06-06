@@ -11,7 +11,6 @@ All rights reserved (see LICENSE).
 
 #include "structures/vroom/tw_route.h"
 #include "utils/helpers.h"
-#include "utils/time_utils.h"
 
 namespace vroom {
 
@@ -117,10 +116,7 @@ PreviousInfo TWRoute::previous_info(const Input& input,
   } else {
     if (has_start) {
       previous.location_index = v.start.value().index();
-      previous.travel = previous.travel = scaled_duration(input,
-                                  previous.earliest,   // departure time
-                                  v.duration(previous_job.index(),
-                                             j.index()));
+      previous.travel = v.duration(previous.location_index, j.index());
     }
   }
 
@@ -140,10 +136,7 @@ NextInfo TWRoute::next_info(const Input& input,
     }
   } else {
     next.latest = latest[rank];
-    next.travel = scaled_duration(input,
-                              latest[rank],          // departure
-                              v.duration(j.index(),
-                                         input.jobs[route[rank]].index()));
+    next.travel = v.duration(j.index(), input.jobs[route[rank]].index());
   }
 
   return next;

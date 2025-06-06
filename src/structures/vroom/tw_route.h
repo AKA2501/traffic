@@ -13,7 +13,6 @@ All rights reserved (see LICENSE).
 #include "structures/typedefs.h"
 #include "structures/vroom/input/input.h"
 #include "structures/vroom/raw_route.h"
-#include "utils/time_utils.h"
 
 namespace vroom {
 
@@ -83,25 +82,6 @@ private:
                            const NextInfo& next,
                            const Amount& current_load,
                            bool check_max_load = true) const;
-
-
-  /* ---------- Peak-hour scaling wrapper -------------------------- */
-  inline Duration scaled_duration(const Input& in,
-                                  Duration departure_unix,
-                                  Duration raw) const {
-
-    const int tz = in.vehicles[v_rank].timezone_offset;
-    const Duration dep_sec =
-      vroom::utils::day_seconds(departure_unix, tz);
-
-    if (in.peak_multiplier != 1.0 &&
-        dep_sec >= in.peak_window.start &&
-        dep_sec <  in.peak_window.end) {
-      return static_cast<Duration>(
-        std::llround(static_cast<double>(raw) * in.peak_multiplier));
-    }
-    return raw;     // outside window → keep original
-  }
 
 public:
   Duration v_start;

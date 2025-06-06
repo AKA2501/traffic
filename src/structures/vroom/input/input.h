@@ -54,8 +54,6 @@ private:
   bool _report_distances;
   bool _has_jobs{false};
   bool _has_shipments{false};
- TimeWindow peak_window{0, 0};   
-  double     peak_multiplier{1.0}; 
   std::unordered_map<std::string,
                      Matrix<UserDuration>,
                      StringHash,
